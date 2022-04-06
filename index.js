@@ -1,16 +1,19 @@
-const fs = require('fs');
+const express =require('express');
 const path = require('path');
-const dirPath = path.join(__dirname,'curd');
-const filePath = `${dirPath}/apple.txt`;
- fs.writeFileSync(filePath,'this is simple text file');
+const app = express();
 
-fs.readFile(filePath,'utf8',(err,file)=>{
-      console.log(file)
- })
- fs.appendFile(filePath,' this is updated file', (err)=>{
-     if(!err) console.log('files is updated')
- })
- fs.rename(filePath,`${dirPath}/fruit.txt`, (err)=> {
-     if(!err) console.log('file is rename')
- })
-fs.unlinkSync(`${dirPath}/fruit.txt`);
+const publicPath = path.join(__dirname,'public');
+// extention remove with help of sendFile function
+app.get('',(req,resp)=>{
+    resp.sendFile(`${publicPath}/index.html`)
+})
+app.get('/about',(req,resp)=>{
+    resp.sendFile(`${publicPath}/about.html`)
+})
+app.get('/help',(req,resp)=>{
+    resp.sendFile(`${publicPath}/help.html`)
+})
+app.get('*',(req,resp)=>{
+    resp.sendFile(`${publicPath}/nopage.html`)
+})
+app.listen(4000);
